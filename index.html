@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RESPON BOX SAW DEMO</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eaf4ff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #cddfff;
+        }
+        h2, h3 {
+            text-align: center;
+            color: #3d8bfd;
+        }
+        input, select, textarea, button {
+            width: 100%;
+            margin-top: 8px;
+            padding: 10px;
+            border: 1px solid #bcd3ff;
+            border-radius: 5px;
+        }
+        button {
+            background: #4ea1ff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #2f8aff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th {
+            background: #4ea1ff;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            background: #ffffff;
+            padding: 8px;
+            border-bottom: 1px solid #cddfff;
+        }
+        .navbar {
+            width: 100%;
+            padding: 15px;
+            background: #4ea1ff;
+            color: white;
+            font-weight: bold;
+        }
+        .logout-btn {
+            background: #ff5252 !important;
+        }
+        .page { display: none; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- ================== LOGIN PAGE ================== -->
+<div id="loginPage" class="page" style="display:block;">
+    <div class="container">
+        <h2>LOGIN</h2>
+
+        <label>Username</label>
+        <input type="text" id="username">
+
+        <label>Password</label>
+        <input type="password" id="password">
+
+        <button onclick="login()">Login</button>
+
+        <p style="text-align:center; margin-top:10px;">
+            Belum punya akun? <a href="#" onclick="showPage('registerPage')">Registrasi</a>
+        </p>
+    </div>
+</div>
+
+<!-- ================== REGISTRASI ================== -->
+<div id="registerPage" class="page">
+    <div class="container">
+        <h2>REGISTRASI MAHASISWA</h2>
+
+        <label>Nama</label>
+        <input type="text" id="regNama">
+
+        <label>NIM</label>
+        <input type="text" id="regNIM">
+
+        <label>Kelas</label>
+        <input type="text" id="regKelas">
+
+        <label>TTL</label>
+        <input type="text" id="regTTL">
+
+        <label>Password</label>
+        <input type="password" id="regPass">
+
+        <button onclick="register()">Daftar</button>
+    </div>
+</div>
+
+<!-- ================== MAHASISWA DASHBOARD ================== -->
+<div id="mhsPage" class="page">
+    <div class="navbar">Dashboard Mahasiswa</div>
+
+    <div class="container">
+        <h3>Buat Laporan Baru</h3>
+
+        <label>Kategori</label>
+        <select id="kat">
+            <option>Kerusakan Ruangan</option>
+            <option>Kerusakan Peralatan</option>
+            <option>Kebersihan</option>
+        </select>
+
+        <label>Lokasi</label>
+        <input type="text" id="lok">
+
+        <label>Deskripsi</label>
+        <textarea id="desk"></textarea>
+
+        <button onclick="buatLaporan()">Kirim Laporan</button>
+    </div>
+
+    <div class="container">
+        <h3>Riwayat Laporan</h3>
+        <table id="tableMhs"></table>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<!-- ================== ADMIN DASHBOARD ================== -->
+<div id="adminPage" class="page">
+    <div class="navbar">Dashboard Admin</div>
+
+    <div class="container">
+        <h3>Filter Laporan</h3>
+
+        <label>Kategori</label>
+        <select id="filterKategori" onchange="loadAdmin()">
+            <option value="">Semua</option>
+            <option>Kerusakan Ruangan</option>
+            <option>Kerusakan Peralatan</option>
+            <option>Kebersihan</option>
+        </select>
+
+        <label>Status</label>
+        <select id="filterStatus" onchange="loadAdmin()">
+            <option value="">Semua</option>
+            <option>Baru</option>
+            <option>Diproses</option>
+            <option>Selesai</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <h3>Status Laporan</h3>
+        <div id="statusAdmin"></div>
+        <table id="tableAdmin"></table>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<!-- ================== PIMPINAN DASHBOARD ================== -->
+<div id="pimpPage" class="page">
+    <div class="navbar">Dashboard Pimpinan</div>
+
+    <div class="container">
+        <h3>Status Laporan</h3>
+        <div id="statusPimp"></div>
+    </div>
+
+    <div class="container">
+        <h3>Tren Laporan 30 Hari</h3>
+        <canvas id="chartTrend"></canvas>
+    </div>
+
+    <div class="container">
+        <h3>Rekap Kategori</h3>
+        <table id="tableRekap"></table>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<!-- ================== JAVASCRIPT INTI SISTEM ================== -->
+<script>
+
+/* =========================== DATA =========================== */
+
+let users = JSON.parse(localStorage.getItem("users") || "[]");
+let laporan = JSON.parse(localStorage.getItem("laporan") || "[]");
+let currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+
+// User default
+const adminDefault = { username: "admin", password: "admin", role: "admin" };
+const pimpDefault  = { username: "pimpinan", password: "pimpinan", role: "pimpinan" };
+
+if (!users.find(u=>u.username==="admin")) users.push(adminDefault);
+if (!users.find(u=>u.username==="pimpinan")) users.push(pimpDefault);
+
+saveUsers();
+
+/* =========================== HELPER =========================== */
+
+function saveUsers(){ localStorage.setItem("users", JSON.stringify(users)); }
+function saveLaporan(){ localStorage.setItem("laporan", JSON.stringify(laporan)); }
+function saveCurrent(){ localStorage.setItem("currentUser", JSON.stringify(currentUser)); }
+
+function showPage(id){
+    document.querySelectorAll(".page").forEach(p=>p.style.display="none");
+    document.getElementById(id).style.display="block";
+}
+
+/* =========================== LOGIN =========================== */
+function login(){
+    let u = document.getElementById("username").value;
+    let p = document.getElementById("password").value;
+
+    let found = users.find(x => x.username === u && x.password === p);
+
+    if(!found){
+        alert("Username / Password salah");
+        return;
+    }
+
+    currentUser = found;
+    saveCurrent();
+
+    if(found.role==="mahasiswa") loadMhs();
+    if(found.role==="admin") loadAdmin();
+    if(found.role==="pimpinan") loadPimpinan();
+}
+
+/* ========================= REGISTRASI ========================= */
+function register(){
+    let nama = regNama.value;
+    let nim = regNIM.value;
+    let kelas = regKelas.value;
+    let ttl = regTTL.value;
+    let pass = regPass.value;
+
+    if(!nama||!nim||!kelas||!ttl||!pass){
+        alert("Lengkapi semua field");
+        return;
+    }
+
+    users.push({
+        username: nim,
+        password: pass,
+        role: "mahasiswa",
+        nama, nim, kelas, ttl
+    });
+
+    saveUsers();
+
+    alert("Registrasi berhasil");
+    showPage("loginPage");
+}
+
+/* ====================== MAHASISWA ====================== */
+
+function loadMhs(){
+    showPage("mhsPage");
+
+    let tbl = document.getElementById("tableMhs");
+    tbl.innerHTML = `
+        <tr><th>#</th><th>Kategori</th><th>Lokasi</th><th>Status</th></tr>
+    `;
+
+    laporan
+        .filter(x=>x.nim===currentUser.username)
+        .forEach((l,i)=>{
+            tbl.innerHTML += `
+                <tr>
+                    <td>${i+1}</td>
+                    <td>${l.kategori}</td>
+                    <td>${l.lokasi}</td>
+                    <td>${l.status}</td>
+                </tr>
+            `;
+        });
+}
+
+function buatLaporan(){
+    let kategori = kat.value;
+    let lokasi = lok.value;
+    let desk = desk.value;
+
+    if(!lokasi || !desk){
+        alert("Isi lokasi dan deskripsi");
+        return;
+    }
+
+    laporan.push({
+        kategori,
+        lokasi,
+        desk,
+        nim: currentUser.username,
+        nimView: currentUser.username.replace(/(.{6})/,"$1******"),
+        status: "Baru",
+        created: new Date().toISOString(),
+        c1: Math.floor(Math.random()*5)+1,
+        c2: Math.floor(Math.random()*5)+1,
+        c3: Math.floor(Math.random()*5)+1
+    });
+
+    saveLaporan();
+    loadMhs();
+
+    alert("Laporan terkirim.");
+}
+
+/* ====================== SAW ====================== */
+
+function hitungSAW(){
+
+    let max1 = Math.max(...laporan.map(l=>l.c1));
+    let max2 = Math.max(...laporan.map(l=>l.c2));
+    let max3 = Math.max(...laporan.map(l=>l.c3));
+
+    return laporan.map(l => {
+        let n1 = l.c1 / max1;
+        let n2 = l.c2 / max2;
+        let n3 = l.c3 / max3;
+
+        let score = (0.4*n1)+(0.35*n2)+(0.25*n3);
+
+        return { ...l, score: score.toFixed(3) };
+    }).sort((a,b)=>b.score - a.score);
+}
+
+/* ====================== ADMIN ====================== */
+
+function loadAdmin(){
+    showPage("adminPage");
+
+    let data = hitungSAW();
+
+    let fk = filterKategori.value;
+    let fs = filterStatus.value;
+
+    if(fk) data = data.filter(d=>d.kategori===fk);
+    if(fs) data = data.filter(d=>d.status===fs);
+
+    statusAdmin.innerHTML = `Total: ${data.length} laporan`;
+
+    tableAdmin.innerHTML = `
+        <tr><th>#</th><th>Kategori</th><th>Lokasi</th><th>Skor SAW</th><th>Status</th></tr>
+    `;
+
+    data.forEach((l,i)=>{
+        tableAdmin.innerHTML += `
+            <tr>
+                <td>${i+1}</td>
+                <td>${l.kategori}</td>
+                <td>${l.lokasi}</td>
+                <td>${l.score}</td>
+                <td>
+                    <select onchange="ubahStatus(${i}, this.value)">
+                        <option ${l.status==="Baru"?"selected":""}>Baru</option>
+                        <option ${l.status==="Diproses"?"selected":""}>Diproses</option>
+                        <option ${l.status==="Selesai"?"selected":""}>Selesai</option>
+                    </select>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function ubahStatus(index, s){
+
+    let data = hitungSAW();
+    let ori = laporan.indexOf(laporan.find(l=>l.created===data[index].created));
+
+    laporan[ori].status = s;
+    saveLaporan();
+    loadAdmin();
+}
+
+/* ====================== PIMPINAN ====================== */
+
+function loadPimpinan(){
+    showPage("pimpPage");
+
+    let total = laporan.length;
+    let baru = laporan.filter(l=>l.status==="Baru").length;
+    let dip = laporan.filter(l=>l.status==="Diproses").length;
+    let sel = laporan.filter(l=>l.status==="Selesai").length;
+
+    statusPimp.innerHTML = `
+        Total: ${total}<br>
+        Baru: ${baru}<br>
+        Diproses: ${dip}<br>
+        Selesai: ${sel}
+    `;
+
+    let kat = {};
+    laporan.forEach(l => kat[l.kategori] = (kat[l.kategori]||0)+1);
+
+    tableRekap.innerHTML = `
+        <tr><th>Kategori</th><th>Jumlah</th></tr>
+    `;
+    Object.keys(kat).forEach(k=>{
+        tableRekap.innerHTML += `
+            <tr><td>${k}</td><td>${kat[k]}</td></tr>
+        `;
+    });
+
+    loadGrafikTrend();
+}
+
+function loadGrafikTrend(){
+    let tanggal = {};
+    laporan.forEach(l => {
+        let d = l.created.split("T")[0];
+        tanggal[d] = (tanggal[d]||0)+1;
+    });
+
+    new Chart(document.getElementById("chartTrend"), {
+        type: "line",
+        data: {
+            labels: Object.keys(tanggal),
+            datasets: [{
+                label: "Jumlah Laporan",
+                data: Object.values(tanggal),
+                borderColor: "#4ea1ff",
+                fill: false
+            }]
+        }
+    });
+}
+
+/* ====================== LOGOUT ====================== */
+
+function logout(){
+    currentUser = null;
+    saveCurrent();
+    showPage("loginPage");
+}
+
+</script>
+
+</body>
+</html>
