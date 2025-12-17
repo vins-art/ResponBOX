@@ -2,484 +2,434 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>RESPON BOX – SAW Demo</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>RESPON BOX - SAW Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-/* ===============================================
-   THEME — SOFT PASTEL BLUE
-   =============================================== */
-body {
-    font-family: "Segoe UI", sans-serif;
-    background: #e7f1ff;
-    margin: 0;
-    padding: 0;
-}
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #f3f8ff;
+        margin: 0;
+    }
 
-.header {
-    background: #4c8df5;
-    padding: 12px 20px;
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-}
+    /* HEADER */
+    header {
+        background: #75b4ff;
+        color: white;
+        padding: 12px 20px;
+        font-size: 18px;
+        font-weight: 600;
+    }
 
-.container {
-    width: 92%;
-    max-width: 780px;
-    background: white;
-    margin: 20px auto;
-    padding: 22px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(76,141,245,0.25);
-}
+    /* CONTAINERS */
+    .container {
+        max-width: 900px;
+        margin: 25px auto;
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0px 3px 10px rgba(0,0,0,0.08);
+    }
 
-h2, h3 {
-    color: #4c8df5;
-    font-weight: 600;
-    margin-top: 0;
-}
+    h2 {
+        color: #3d6eb8;
+        margin-bottom: 10px;
+    }
 
-input, select, textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cbdcff;
-    border-radius: 8px;
-    margin-top: 6px;
-}
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 6px 0 15px;
+        border-radius: 8px;
+        border: 1px solid #cbd9ff;
+        background: #f8fbff;
+    }
 
-button {
-    background: #4c8df5;
-    color: white;
-    border: none;
-    padding: 9px 18px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-block;
-}
+    button {
+        background: #75b4ff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+    }
 
-button:hover { background: #3b7ae0; }
+    button:hover {
+        background: #599dff;
+    }
 
-.btn-logout {
-    float: right;
-    background: #ff5757;
-    padding: 7px 16px;
-}
-.btn-logout:hover { background: #e64545; }
+    .logoutBtn {
+        background: #ff6b6b !important;
+        padding: 8px 14px !important;
+        float: right;
+        margin-top: -5px;
+    }
 
-.hidden { display: none; }
+    /* TABLE */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
 
-/* TABLE */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 14px;
-}
+    th, td {
+        padding: 10px;
+        border-bottom: 1px solid #e5edff;
+    }
 
-th {
-    background: #4c8df5;
-    color: white;
-    padding: 8px;
-    border-radius: 4px;
-}
+    th {
+        background: #e8f1ff;
+        color: #3d6eb8;
+    }
 
-td {
-    background: #ffffff;
-    padding: 8px;
-    border-bottom: 1px solid #d5e2ff;
-}
+    .statusBox {
+        background: #e8f1ff;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 5px 0;
+        font-size: 15px;
+        color: #3d6eb8;
+    }
 
-/* STATUS BOX */
-.statusBox {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-}
-.statusItem {
-    padding: 10px 16px;
-    background: #f5f9ff;
-    border: 1px solid #cbdcff;
-    border-radius: 8px;
-    font-weight: 600;
-    color: #4c8df5;
-}
+    .flex-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .card {
+        flex: 1;
+        background: #f8fbff;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        border: 1px solid #d6e4ff;
+    }
+
+    .hidden { display: none; }
 </style>
-
 </head>
+
 <body>
 
+<header>
+    RESPON BOX — SAW DEMO
+    <button class="logoutBtn hidden" id="logoutBtn" onclick="logout()">Logout</button>
+</header>
 
-<!-- ===================== LOGIN ===================== -->
-<div id="pageLogin" class="container">
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="container">
     <h2>Login</h2>
+    <p>Username (NIM atau NIDN/NUPTK Anda)</p>
+    <input id="loginUser" type="text">
 
-    <label>Username</label>
-    <input id="loginUser">
-
-    <label>Password</label>
+    <p>Password</p>
     <input id="loginPass" type="password">
 
     <button onclick="login()">Masuk</button>
 
-    <p style="margin-top:10px;">
-        Belum punya akun?
-        <a href="#" onclick="show('pageRegister')">Registrasi Mahasiswa</a>
-    </p>
+    <br><br>
+    <p>Belum punya akun mahasiswa?</p>
+    <button onclick="showPage('regPage')">Registrasi Mahasiswa</button>
 </div>
 
 
-<!-- ===================== REGISTRASI ===================== -->
-<div id="pageRegister" class="container hidden">
+
+<!-- REGISTRASI -->
+<div id="regPage" class="container hidden">
     <h2>Registrasi Mahasiswa</h2>
 
-    <label>Nama</label>
-    <input id="rNama">
+    <p>Nama Lengkap</p>
+    <input id="regNama">
 
-    <label>NIM</label>
-    <input id="rNIM">
+    <p>NIM</p>
+    <input id="regNim">
 
-    <label>Kelas</label>
-    <input id="rKelas">
+    <p>Kelas</p>
+    <input id="regKelas">
 
-    <label>TTL</label>
-    <input id="rTTL">
+    <p>Tempat, Tanggal Lahir</p>
+    <input id="regTTL">
 
-    <label>Password</label>
-    <input id="rPass" type="password">
+    <p>Password</p>
+    <input id="regPass" type="password">
 
-    <button onclick="register()">Daftar</button>
-</div>
-
-
-<!-- ===================== DASHBOARD MAHASISWA ===================== -->
-<div id="pageMhs" class="hidden">
-    <div class="header">
-        Dashboard Mahasiswa
-        <button class="btn-logout" onclick="logout()">Logout</button>
-    </div>
-
-    <div class="container">
-        <h3>Buat Laporan</h3>
-
-        <label>Kategori</label>
-        <select id="mKat">
-            <option>Kerusakan Ruangan</option>
-            <option>Kerusakan Peralatan</option>
-            <option>Kebersihan</option>
-        </select>
-
-        <label>Lokasi</label>
-        <input id="mLok">
-
-        <label>Deskripsi</label>
-        <textarea id="mDesk"></textarea>
-
-        <button onclick="buatLaporan()">Kirim Laporan</button>
-    </div>
-
-    <div class="container">
-        <h3>Riwayat Laporan</h3>
-        <table id="tblMhs"></table>
-    </div>
-</div>
-
-
-<!-- ===================== DASHBOARD ADMIN ===================== -->
-<div id="pageAdmin" class="hidden">
-    <div class="header">
-        Dashboard Admin
-        <button class="btn-logout" onclick="logout()">Logout</button>
-    </div>
-
-    <div class="container">
-        <h3>Filter</h3>
-
-        <label>Kategori</label>
-        <select id="fKat" onchange="loadAdmin()">
-            <option value="">Semua</option>
-            <option>Kerusakan Ruangan</option>
-            <option>Kerusakan Peralatan</option>
-            <option>Kebersihan</option>
-        </select>
-
-        <label>Status</label>
-        <select id="fStat" onchange="loadAdmin()">
-            <option value="">Semua</option>
-            <option>Baru</option>
-            <option>Diproses</option>
-            <option>Selesai</option>
-        </select>
-    </div>
-
-    <div class="container">
-        <h3>Status Laporan</h3>
-        <div id="statAdmin" class="statusBox"></div>
-
-        <table id="tblAdmin"></table>
-    </div>
-</div>
-
-
-<!-- ===================== DASHBOARD PIMPINAN ===================== -->
-<div id="pagePimp" class="hidden">
-    <div class="header">
-        Dashboard Pimpinan
-        <button class="btn-logout" onclick="logout()">Logout</button>
-    </div>
-
-    <div class="container">
-        <h3>Status Laporan</h3>
-        <div id="statPimp" class="statusBox"></div>
-    </div>
-
-    <div class="container">
-        <h3>Tren 30 Hari</h3>
-        <canvas id="chart"></canvas>
-    </div>
-
-    <div class="container">
-        <h3>Rekap Kategori</h3>
-        <table id="tblRekap"></table>
-    </div>
+    <button onclick="registerMahasiswa()">Daftar</button>
+    <button onclick="showPage('loginPage')">Kembali</button>
 </div>
 
 
 
-<!-- ===============================================================
-                     JAVASCRIPT SYSTEM
-=============================================================== -->
-<script>
+<!-- DASHBOARD MAHASISWA -->
+<div id="mahasiswaDashboard" class="container hidden">
+    <h2 id="mhsGreeting">Halo, Mahasiswa</h2>
+    <p id="mhsNimDisplay"></p>
 
-let users = JSON.parse(localStorage.getItem("users") || "[]");
-let laporan = JSON.parse(localStorage.getItem("laporan") || "[]");
-let session = localStorage.getItem("session");
+    <hr><br>
 
-const adminAcc = { user:"admin", pass:"admin" };
-const pimpAcc  = { user:"pimpinan", pass:"pimpinan" };
+    <h3>Buat Laporan Baru</h3>
+    <p>Judul Laporan</p>
+    <input id="lapJudul">
 
-function save(){
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("laporan", JSON.stringify(laporan));
-}
+    <p>Kategori</p>
+    <select id="lapKategori">
+        <option value="Kerusakan Fasilitas">Kerusakan Fasilitas</option>
+        <option value="Kebersihan">Kebersihan</option>
+        <option value="Administrasi">Administrasi</option>
+    </select>
 
-function show(id){
-    document.querySelectorAll("div[id^='page']").forEach(x=>x.classList.add("hidden"));
-    document.getElementById(id).classList.remove("hidden");
-}
+    <p>Deskripsi Laporan</p>
+    <textarea id="lapDeskripsi"></textarea>
 
+    <button onclick="buatLaporan()">Kirim Laporan</button>
 
-/* =================== REGISTRASI =================== */
-function register(){
-    users.push({
-        username: rNIM.value,
-        password: rPass.value,
-        nama: rNama.value,
-        nim: rNIM.value,
-        kelas: rKelas.value,
-        ttl: rTTL.value,
-        role: "mhs"
-    });
+    <br><br><hr><br>
 
-    save();
-    alert("Registrasi berhasil!");
-    show("pageLogin");
-}
+    <h3>Riwayat Laporan Anda</h3>
 
-
-/* =================== LOGIN =================== */
-function login(){
-    let u = loginUser.value, p = loginPass.value;
-
-    if (u===adminAcc.user && p===adminAcc.pass){
-        session = "admin";
-        localStorage.setItem("session","admin");
-        show("pageAdmin");
-        return loadAdmin();
-    }
-
-    if (u===pimpAcc.user && p===pimpAcc.pass){
-        session = "pimp";
-        localStorage.setItem("session","pimp");
-        show("pagePimp");
-        return loadPimp();
-    }
-
-    let m = users.find(x=>x.username===u && x.password===p);
-    if (m){
-        session = m.username;
-        localStorage.setItem("session", m.username);
-        show("pageMhs");
-        return loadMhs();
-    }
-
-    alert("Username atau password salah.");
-}
-
-
-/* =================== LOGOUT =================== */
-function logout(){
-    localStorage.removeItem("session");
-    show("pageLogin");
-}
-
-
-/* =================== MAHASISWA =================== */
-function buatLaporan(){
-    laporan.push({
-        kategori: mKat.value,
-        lokasi: mLok.value,
-        desk: mDesk.value,
-        status: "Baru",
-        created: new Date().toISOString(),
-
-        // Nilai acak untuk simulasi SAW
-        c1: Math.floor(Math.random()*5)+1,
-        c2: Math.floor(Math.random()*5)+1,
-        c3: Math.floor(Math.random()*5)+1,
-    });
-
-    save();
-    loadMhs();
-    alert("Laporan berhasil dikirim!");
-}
-
-function loadMhs(){
-    let tbl = "<tr><th>#</th><th>Kategori</th><th>Lokasi</th><th>Status</th></tr>";
-    laporan.forEach((l,i)=>{
-        tbl += `<tr>
-            <td>${i+1}</td>
-            <td>${l.kategori}</td>
-            <td>${l.lokasi}</td>
-            <td>${l.status}</td>
-        </tr>`;
-    });
-    document.getElementById("tblMhs").innerHTML = tbl;
-}
-
-
-/* =================== SAW =================== */
-function hitungSAW(){
-    if (laporan.length===0) return [];
-
-    let max1 = Math.max(...laporan.map(l=>l.c1));
-    let max2 = Math.max(...laporan.map(l=>l.c2));
-    let max3 = Math.max(...laporan.map(l=>l.c3));
-
-    let w1=0.5, w2=0.3, w3=0.2;
-
-    return laporan.map(l=>{
-        let score = ((l.c1/max1)*w1 + (l.c2/max2)*w2 + (l.c3/max3)*w3).toFixed(3);
-        return {...l, score};
-    }).sort((a,b)=>b.score-a.score);
-}
-
-
-/* =================== ADMIN =================== */
-function ubahStatus(i, val){
-    laporan[i].status = val;
-    save();
-    loadAdmin();
-}
-
-function loadAdmin(){
-    let data = hitungSAW();
-    let fk = fKat.value;
-    let fs = fStat.value;
-
-    if (fk) data = data.filter(l=>l.kategori===fk);
-    if (fs) data = data.filter(l=>l.status===fs);
-
-    let totalBaru = data.filter(l=>l.status==="Baru").length;
-    let totalPro = data.filter(l=>l.status==="Diproses").length;
-    let totalSls = data.filter(l=>l.status==="Selesai").length;
-
-    document.getElementById("statAdmin").innerHTML = `
-        <div class="statusItem">Baru: ${totalBaru}</div>
-        <div class="statusItem">Diproses: ${totalPro}</div>
-        <div class="statusItem">Selesai: ${totalSls}</div>
-    `;
-
-    let tbl = `
+    <table id="tableMhs">
         <tr>
-            <th>#</th>
-            <th>Kategori</th>
-            <th>Lokasi</th>
-            <th>Skor</th>
-            <th>Aksi</th>
+            <th>Judul</th><th>Kategori</th><th>Status</th>
         </tr>
-    `;
+    </table>
+</div>
 
-    data.forEach((l,i)=>{
-        tbl += `
+
+
+<!-- DASHBOARD ADMIN -->
+<div id="adminDashboard" class="container hidden">
+    <h2>Dashboard Admin</h2>
+
+    <div class="statusBox">Laporan Baru: <span id="admBaru">0</span></div>
+    <div class="statusBox">Diproses: <span id="admProses">0</span></div>
+    <div class="statusBox">Selesai Hari Ini: <span id="admDone">0</span></div>
+
+    <h3>Semua Laporan (SAW Filtering Otomatis)</h3>
+    <table id="adminTable">
         <tr>
-            <td>${i+1}</td>
-            <td>${l.kategori}</td>
-            <td>${l.lokasi}</td>
-            <td>${l.score}</td>
-            <td>
-                <select onchange="ubahStatus(${i}, this.value)">
-                    <option ${l.status==="Baru"?"selected":""}>Baru</option>
-                    <option ${l.status==="Diproses"?"selected":""}>Diproses</option>
-                    <option ${l.status==="Selesai"?"selected":""}>Selesai</option>
-                </select>
-            </td>
-        </tr>`;
-    });
+            <th>Pelapor</th><th>Judul</th><th>Kategori</th><th>Status</th>
+        </tr>
+    </table>
+</div>
 
-    document.getElementById("tblAdmin").innerHTML = tbl;
+
+
+<!-- DASHBOARD PIMPINAN -->
+<div id="pimpinanDashboard" class="container hidden">
+    <h2>Dashboard Pimpinan</h2>
+
+    <div class="flex-row">
+        <div class="card">Total Laporan<br><b id="pTotal">0</b></div>
+        <div class="card">Baru<br><b id="pBaru">0</b></div>
+        <div class="card">Diproses<br><b id="pProses">0</b></div>
+        <div class="card">Selesai<br><b id="pSelesai">0</b></div>
+    </div>
+
+    <br><br>
+    <h3>Tren Kerusakan (30 Hari) — Dummy</h3>
+    <div class="card">[Diagram Placeholder]</div>
+
+    <br>
+    <h3>Rekap Kategori Terbanyak (30 Hari)</h3>
+    <div class="card">[Rekap Placeholder]</div>
+
+    <br>
+    <button>Export PDF</button>
+    <button>Export CSV</button>
+</div>
+
+<script>
+/* ================================
+   NAVIGATION
+================================== */
+function showPage(page){
+    document.querySelectorAll(".container").forEach(c => c.classList.add("hidden"));
+    document.getElementById(page).classList.remove("hidden");
+
+    // tampilkan tombol logout jika bukan halaman login/regis
+    if (page === "loginPage" || page === "regPage"){
+        document.getElementById("logoutBtn").classList.add("hidden");
+    } else {
+        document.getElementById("logoutBtn").classList.remove("hidden");
+    }
 }
 
 
-/* =================== PIMPINAN =================== */
-function loadPimp(){
-    let baru = laporan.filter(l=>l.status==="Baru").length;
-    let pro  = laporan.filter(l=>l.status==="Diproses").length;
-    let sls  = laporan.filter(l=>l.status==="Selesai").length;
 
-    document.getElementById("statPimp").innerHTML = `
-        <div class="statusItem">Baru: ${baru}</div>
-        <div class="statusItem">Diproses: ${pro}</div>
-        <div class="statusItem">Selesai: ${sls}</div>
+/* ================================
+   REGISTRASI MAHASISWA
+================================== */
+function registerMahasiswa(){
+    const mhsList = JSON.parse(localStorage.getItem("mahasiswaList")) || [];
+
+    const data = {
+        nama: document.getElementById("regNama").value,
+        nim: document.getElementById("regNim").value,
+        kelas: document.getElementById("regKelas").value,
+        ttl: document.getElementById("regTTL").value,
+        password: document.getElementById("regPass").value
+    };
+
+    mhsList.push(data);
+    localStorage.setItem("mahasiswaList", JSON.stringify(mhsList));
+
+    alert("Registrasi Berhasil!");
+    showPage("loginPage");
+}
+
+
+
+/* ================================
+   LOGIN
+================================== */
+function login(){
+    const user = loginUser.value.trim();
+    const pass = loginPass.value.trim();
+
+    const admin = { user:"admin", pass:"admin123", role:"admin" };
+    const pimpinan = { user:"pimpinan", pass:"pimpinan123", role:"pimpinan" };
+
+    if(user === admin.user && pass === admin.pass){
+        localStorage.setItem("loggedUser", JSON.stringify(admin));
+        showAdmin();
+        return;
+    }
+
+    if(user === pimpinan.user && pass === pimpinan.pass){
+        localStorage.setItem("loggedUser", JSON.stringify(pimpinan));
+        showPimpinan();
+        return;
+    }
+
+    const list = JSON.parse(localStorage.getItem("mahasiswaList")) || [];
+    const mhs = list.find(m => m.nim === user && m.password === pass);
+
+    if(mhs){
+        localStorage.setItem("loggedUser", JSON.stringify({
+            role:"mahasiswa",
+            nama:mhs.nama,
+            nim:mhs.nim
+        }));
+        showMahasiswa(mhs);
+        return;
+    }
+
+    alert("Login gagal.");
+}
+
+
+
+/* ================================
+   DASHBOARD MAHASISWA
+================================== */
+function showMahasiswa(m){
+    document.getElementById("mhsGreeting").innerHTML = "Halo, " + m.nama;
+    document.getElementById("mhsNimDisplay").innerHTML = "NIM: " + m.nim;
+    loadLaporanMahasiswa(m.nim);
+    showPage("mahasiswaDashboard");
+}
+
+function buatLaporan(){
+    const list = JSON.parse(localStorage.getItem("laporanList")) || [];
+
+    const pelapor = JSON.parse(localStorage.getItem("loggedUser"));
+    const anon = pelapor.nim.substring(0,6) + "******";
+
+    list.push({
+        nim: pelapor.nim,
+        anon: anon,
+        judul: lapJudul.value,
+        kategori: lapKategori.value,
+        deskripsi: lapDeskripsi.value,
+        status: "Baru"
+    });
+
+    localStorage.setItem("laporanList", JSON.stringify(list));
+    alert("Laporan berhasil dikirim!");
+    loadLaporanMahasiswa(pelapor.nim);
+}
+
+function loadLaporanMahasiswa(nim){
+    const list = JSON.parse(localStorage.getItem("laporanList")) || [];
+    const table = document.getElementById("tableMhs");
+
+    table.innerHTML = `
+        <tr><th>Judul</th><th>Kategori</th><th>Status</th></tr>
     `;
 
-    let rekap = {};
-    laporan.forEach(l=>{
-        rekap[l.kategori] = (rekap[l.kategori]||0)+1;
-    });
-
-    let tbl = "<tr><th>Kategori</th><th>Jumlah</th></tr>";
-    for (let k in rekap){
-        tbl += `<tr><td>${k}</td><td>${rekap[k]}</td></tr>`;
-    }
-    document.getElementById("tblRekap").innerHTML = tbl;
-
-    loadChart();
-}
-
-function loadChart(){
-    let perTanggal = {};
-    laporan.forEach(l=>{
-        let t = l.created.split("T")[0];
-        perTanggal[t] = (perTanggal[t]||0)+1;
-    });
-
-    new Chart(document.getElementById("chart"), {
-        type:"line",
-        data:{
-            labels:Object.keys(perTanggal),
-            datasets:[{
-                label:"Jumlah laporan",
-                data:Object.values(perTanggal),
-                borderColor:"#4c8df5",
-                backgroundColor:"rgba(76,141,245,0.2)",
-                borderWidth: 2,
-                tension: 0.3
-            }]
-        }
+    list.filter(l => l.nim === nim).forEach(l => {
+        table.innerHTML += `
+            <tr>
+                <td>${l.judul}</td>
+                <td>${l.kategori}</td>
+                <td>${l.status}</td>
+            </tr>
+        `;
     });
 }
 
+
+
+/* ================================
+   DASHBOARD ADMIN
+================================== */
+function showAdmin(){
+    loadAdminData();
+    showPage("adminDashboard");
+}
+
+function loadAdminData(){
+    const list = JSON.parse(localStorage.getItem("laporanList")) || [];
+
+    document.getElementById("admBaru").innerText = list.filter(l => l.status=="Baru").length;
+    document.getElementById("admProses").innerText = list.filter(l => l.status=="Proses").length;
+    document.getElementById("admDone").innerText = list.filter(l => l.status=="Selesai").length;
+
+    const tbl = document.getElementById("adminTable");
+    tbl.innerHTML = `
+        <tr><th>Pelapor</th><th>Judul</th><th>Kategori</th><th>Status</th></tr>
+    `;
+
+    list.forEach(l => {
+        tbl.innerHTML += `
+            <tr>
+                <td>${l.anon}</td>
+                <td>${l.judul}</td>
+                <td>${l.kategori}</td>
+                <td>${l.status}</td>
+            </tr>
+        `;
+    });
+}
+
+
+
+/* ================================
+   DASHBOARD PIMPINAN
+================================== */
+function showPimpinan(){
+    const list = JSON.parse(localStorage.getItem("laporanList")) || [];
+
+    pTotal.innerText = list.length;
+    pBaru.innerText = list.filter(l => l.status=="Baru").length;
+    pProses.innerText = list.filter(l => l.status=="Proses").length;
+    pSelesai.innerText = list.filter(l => l.status=="Selesai").length;
+
+    showPage("pimpinanDashboard");
+}
+
+
+
+/* ================================
+   LOGOUT
+================================== */
+function logout(){
+    localStorage.removeItem("loggedUser");
+    showPage("loginPage");
+}
 </script>
+
 </body>
 </html>
