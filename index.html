@@ -1,419 +1,392 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RESPON BOX - SAW</title>
+<meta charset="UTF-8">
+<title>RESPON BOX SAW</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-:root{
-    --blue:#8CC7FF;
-    --blue-soft:#E8F4FF;
-    --white:#FFFFFF;
-    --shadow:0 3px 10px rgba(0,0,0,0.08);
-    --radius:10px;
-}
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f1f6ff;
+        text-align: center;
+    }
 
-/* GLOBAL */
-body{
-    font-family: "Segoe UI", sans-serif;
-    background: var(--blue-soft);
-    margin:0;
-}
+    header {
+        width: 100%;
+        background: #d9eaff;
+        padding: 10px 0;
+        font-size: 20px;
+        font-weight: bold;
+        color: #3b4b69;
+        border-bottom: 1px solid #bdd4ff;
+        position: relative;
+    }
 
-/* NAVBAR */
-.navbar{
-    background:white;
-    padding:12px 24px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    box-shadow:var(--shadow);
-}
-.navbar .title{
-    font-size:19px;
-    font-weight:600;
-}
-.nav-right{
-    display:flex;
-    align-items:center;
-    gap:20px;
-    text-align:right;
-    font-size:14px;
-}
-.logout-btn{
-    padding:8px 16px;
-    background:var(--blue);
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
-.logout-btn:hover{
-    opacity:0.85;
-}
+    .container {
+        width: 90%;
+        max-width: 900px;
+        margin: auto;
+        margin-top: 25px;
+    }
 
-/* AUTH BOX */
-.auth-box{
-    width:350px;
-    padding:25px;
-    border-radius:var(--radius);
-    background:white;
-    margin:80px auto;
-    box-shadow:var(--shadow);
-}
-.auth-box input{
-    width:100%;
-    padding:10px;
-    margin:7px 0;
-    border-radius:8px;
-    border:1px solid #ccc;
-}
-.btn{
-    width:100%;
-    padding:10px;
-    background:var(--blue);
-    border:none;
-    color:white;
-    border-radius:8px;
-    cursor:pointer;
-}
+    .card {
+        background: white;
+        padding: 25px;
+        border-radius: 14px;
+        box-shadow: 0 2px 8px #c9d7f3;
+        margin-bottom: 20px;
+    }
 
-/* DASHBOARD */
-.container{
-    max-width:1100px;
-    margin:20px auto;
-    padding:10px;
-}
-.card{
-    background:white;
-    padding:20px;
-    border-radius:var(--radius);
-    margin-bottom:20px;
-    box-shadow:var(--shadow);
-}
-.card-title{
-    font-size:18px;
-    font-weight:600;
-    margin-bottom:15px;
-}
-textarea{
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid #ccc;
-    margin-top:10px;
-}
-.status-box{
-    display:flex;
-    gap:15px;
-}
-.status-card{
-    flex:1;
-    background:var(--blue);
-    padding:15px;
-    border-radius:var(--radius);
-    color:white;
-    box-shadow:var(--shadow);
-}
-.status-card span{
-    font-size:24px;
-    font-weight:bold;
-}
+    input, select, textarea {
+        width: 90%;
+        padding: 10px;
+        margin-top: 8px;
+        border: 1px solid #c6d4f7;
+        border-radius: 8px;
+        background: #f9fbff;
+    }
 
-/* TABLE */
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-th, td{
-    padding:10px;
-    border-bottom:1px solid #ddd;
-}
-th{
-    background:#f0f7ff;
-}
+    button {
+        padding: 10px 20px;
+        background: #6aa6ff;
+        border: none;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 12px;
+    }
+    button:hover { background: #4f8df0; }
 
-/* PAGE TOGGLE */
-.page{ display:none; }
+    .logout-btn {
+        background: #ff7f7f;
+        padding: 8px 15px;
+        margin-top: 20px;
+    }
+
+    .top-right {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 15px;
+        color: #334465;
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    th, td {
+        padding: 10px;
+        border-bottom: 1px solid #d1defc;
+    }
+    th {
+        background: #e7f0ff;
+    }
+
+    .status-box {
+        display: inline-block;
+        background: #e7f0ff;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 8px;
+        font-weight: bold;
+        color: #3b4b69;
+    }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN PAGE -->
-<div id="loginPage" class="page" style="display:block;">
-    <div class="auth-box">
-        <h2 style="text-align:center;">Login</h2>
-        <p style="font-size:13px;text-align:center;">
-            Username = NIM atau NIDN/NUPTK
-        </p>
-        <input id="loginUser" placeholder="Masukkan Username">
+<header>
+    RESPON BOX – Sistem SAW
+</header>
+
+
+<!-- =============================== -->
+<!-- LOGIN -->
+<!-- =============================== -->
+
+<div id="authSection" class="container">
+    <div class="card">
+        <h2>Login</h2>
+        <input id="loginUser" placeholder="NIM atau NIDN/NUPTK anda">
         <input id="loginPass" type="password" placeholder="Password">
-        <button class="btn" onclick="login()">Masuk</button>
+        <button onclick="login()">Masuk</button>
 
-        <p style="text-align:center;margin-top:10px;">
-            Belum punya akun? <a href="#" onclick="showPage('registerPage')">Registrasi</a>
-        </p>
+        <p>Belum punya akun? <a href="#" onclick="showRegister()">Daftar Mahasiswa</a></p>
     </div>
 </div>
 
-<!-- REGISTER PAGE -->
-<div id="registerPage" class="page">
-    <div class="auth-box">
-        <h2 style="text-align:center;">Registrasi Mahasiswa</h2>
+<!-- =============================== -->
+<!-- REGISTER -->
+<!-- =============================== -->
 
-        <input id="regNama" placeholder="Nama Lengkap">
-        <input id="regNIM" placeholder="NIM">
-        <input id="regKelas" placeholder="Kelas">
-        <input id="regTTL" placeholder="Tempat, Tanggal Lahir">
-
-        <button class="btn" onclick="registerMhs()">Daftar</button>
-
-        <p style="text-align:center;margin-top:10px;">
-            Sudah punya akun? <a href="#" onclick="showPage('loginPage')">Login</a>
-        </p>
+<div id="registerSection" class="container" style="display:none;">
+    <div class="card">
+        <h2>Registrasi Mahasiswa</h2>
+        <input id="rNama" placeholder="Nama">
+        <input id="rNim" placeholder="NIM">
+        <input id="rKelas" placeholder="Kelas">
+        <input id="rTtl" placeholder="Tempat Tanggal Lahir">
+        <input id="rPass" type="password" placeholder="Password">
+        <button onclick="register()">Daftar</button>
+        <p><a href="#" onclick="showLogin()">Kembali ke Login</a></p>
     </div>
 </div>
 
-<!-- NAVBAR -->
-<div id="navbar" class="navbar page">
-    <div class="title">RESPON BOX</div>
-    <div class="nav-right">
-        <div id="userInfo"></div>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-    </div>
-</div>
 
+<!-- =============================== -->
 <!-- DASHBOARD MAHASISWA -->
-<div id="mhsDashboard" class="page container">
-    <div class="card">
-        <div class="card-title">Buat Laporan Baru</div>
+<!-- =============================== -->
 
-        <input id="lapJudul" placeholder="Judul Laporan">
-        <input id="lapKategori" placeholder="Kategori">
-        <textarea id="lapIsi" placeholder="Isi laporan..."></textarea>
-        <button class="btn" onclick="buatLaporan()">Kirim</button>
+<div id="mhsDashboard" class="container" style="display:none;">
+    <div class="card">
+        <h2 id="mhsUserInfo"></h2>
     </div>
 
     <div class="card">
-        <div class="card-title">Riwayat Laporan</div>
+        <h2>Buat Laporan Baru</h2>
+        <input id="lapKategori" placeholder="Kategori Kerusakan">
+        <textarea id="lapDesc" placeholder="Deskripsi Kerusakan"></textarea>
+        <button onclick="kirimLaporan()">Kirim Laporan</button>
+    </div>
+
+    <div class="card">
+        <h2>Riwayat Laporan Anda</h2>
         <table>
             <thead>
-                <tr>
-                    <th>Judul</th><th>Kategori</th><th>Status</th>
-                </tr>
+                <tr><th>Kategori</th><th>Deskripsi</th><th>Status</th></tr>
             </thead>
             <tbody id="mhsTable"></tbody>
         </table>
     </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
+
+<!-- =============================== -->
 <!-- DASHBOARD ADMIN -->
-<div id="adminDashboard" class="page container">
+<!-- =============================== -->
+
+<div id="adminDashboard" class="container" style="display:none;">
     <div class="card">
-        <div class="card-title">Status Hari Ini</div>
-        <div class="status-box">
-            <div class="status-card">Baru: <span id="sBaru">0</span></div>
-            <div class="status-card">Diproses: <span id="sProses">0</span></div>
-            <div class="status-card">Selesai: <span id="sSelesai">0</span></div>
-        </div>
+        <h2>Status Laporan</h2>
+        <div class="status-box">Baru: <span id="aBaru"></span></div>
+        <div class="status-box">Diproses: <span id="aProses"></span></div>
+        <div class="status-box">Selesai: <span id="aSelesai"></span></div>
     </div>
 
     <div class="card">
-        <div class="card-title">Data Laporan</div>
+        <h2>Tabel Laporan</h2>
         <table>
             <thead>
-                <tr>
-                    <th>Pelapor</th><th>Judul</th><th>Status</th>
-                </tr>
+                <tr><th>Kategori</th><th>Deskripsi</th><th>Status</th></tr>
             </thead>
             <tbody id="adminTable"></tbody>
         </table>
     </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
+
+<!-- =============================== -->
 <!-- DASHBOARD PIMPINAN -->
-<div id="pimpDashboard" class="page container">
+<!-- =============================== -->
+
+<div id="pimpDashboard" class="container" style="display:none;">
     <div class="card">
-        <div class="card-title">Status</div>
-        <div class="status-box">
-            <div class="status-card">Total: <span id="pTotal">0</span></div>
-            <div class="status-card">Baru: <span id="pBaru">0</span></div>
-            <div class="status-card">Proses: <span id="pProses">0</span></div>
-            <div class="status-card">Selesai: <span id="pSelesai">0</span></div>
-        </div>
+        <h2>Status Laporan</h2>
+        <div class="status-box">Total: <span id="pTotal"></span></div>
+        <div class="status-box">Baru: <span id="pBaru"></span></div>
+        <div class="status-box">Diproses: <span id="pProses"></span></div>
+        <div class="status-box">Selesai: <span id="pSelesai"></span></div>
     </div>
 
     <div class="card">
-        <div class="card-title">Data 30 Hari</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Pelapor</th><th>Judul</th><th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="pimpTable"></tbody>
-        </table>
+        <h2>Rekap Kategori (Dummy)</h2>
+        <p>Fitur grafik 30 hari (dummy demo)</p>
     </div>
+
+    <div class="card">
+        <h2>Export Data</h2>
+        <button>Export PDF</button>
+        <button>Export CSV</button>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
+
+
+<!-- =============================== -->
+<!-- JAVASCRIPT LOGIC -->
+<!-- =============================== -->
 
 <script>
-// DATA
-let users = JSON.parse(localStorage.getItem("users") || "[]");
-let reports = JSON.parse(localStorage.getItem("reports") || "[]");
-let currentUser = null;
+let akun = JSON.parse(localStorage.getItem("akun")) || {};
+let laporan = JSON.parse(localStorage.getItem("laporan")) || [];
 
-function showPage(pg){
-    document.querySelectorAll(".page").forEach(p=>p.style.display="none");
-    document.getElementById(pg).style.display="block";
+// --------------------------
+// SHOW / HIDE
+// --------------------------
+
+function showRegister() {
+    authSection.style.display = "none";
+    registerSection.style.display = "block";
 }
 
-function registerMhs(){
-    if(!regNama.value || !regNIM.value)
-        return alert("Harap isi nama & NIM!");
-
-    users.push({
-        role:"mahasiswa",
-        nama: regNama.value,
-        nim: regNIM.value,
-        kelas: regKelas.value,
-        ttl: regTTL.value,
-        password:"123"
-    });
-
-    localStorage.setItem("users", JSON.stringify(users));
-    alert("Registrasi berhasil! Password default: 123");
-    showPage("loginPage");
+function showLogin() {
+    authSection.style.display = "block";
+    registerSection.style.display = "none";
 }
 
-function login(){
+// --------------------------
+// REGISTER
+// --------------------------
+
+function register() {
+    let nama = rNama.value;
+    let nim = rNim.value;
+    let pass = rPass.value;
+
+    akun[nim] = { nama, nim, pass, role: "mhs" };
+    localStorage.setItem("akun", JSON.stringify(akun));
+
+    alert("Registrasi berhasil!");
+
+    showLogin();
+}
+
+// --------------------------
+// LOGIN
+// --------------------------
+
+function login() {
     let u = loginUser.value;
     let p = loginPass.value;
 
-    // admin
-    if(u=="admin" && p=="admin"){
-        currentUser = {role:"admin", nama:"Admin"};
-        loadDashboard();
+    if (u === "admin" && p === "admin") {
+        openAdmin();
+        return;
+    }
+    if (u === "pimpinan" && p === "pimpinan") {
+        openPimpinan();
+        return;
+    }
+    if (akun[u] && akun[u].pass === p) {
+        openMahasiswa(akun[u]);
         return;
     }
 
-    // pimpinan
-    if(u=="pimpinan" && p=="pimpinan"){
-        currentUser = {role:"pimpinan", nama:"Pimpinan"};
-        loadDashboard();
-        return;
-    }
-
-    // mahasiswa
-    let f = users.find(x=>x.nim==u && x.password==p);
-    if(!f) return alert("Login gagal!");
-
-    currentUser = f;
-    loadDashboard();
+    alert("Login gagal!");
 }
 
-function loadDashboard(){
-    document.getElementById("navbar").style.display="flex";
+// --------------------------
+// MAHASISWA DASHBOARD
+// --------------------------
 
-    userInfo.innerHTML = `
-        <b>Halo, ${currentUser.nama}</b><br>
-        ${currentUser.nim ? "NIM: "+currentUser.nim : ""}
-    `;
+let currentMhs = null;
 
-    if(currentUser.role=="mahasiswa"){
-        loadMhs();
-        showPage("navbar"); showPage("mhsDashboard");
-    } 
-    else if(currentUser.role=="admin"){
-        loadAdmin();
-        showPage("navbar"); showPage("adminDashboard");
-    }
-    else{
-        loadPimpinan();
-        showPage("navbar"); showPage("pimpDashboard");
-    }
+function openMahasiswa(data) {
+    currentMhs = data;
+    authSection.style.display = "none";
+    mhsDashboard.style.display = "block";
+
+    mhsUserInfo.textContent =
+        `Halo, ${data.nama} — NIM: ${data.nim}`;
+
+    loadMhsTable();
 }
 
-function buatLaporan(){
-    reports.push({
-        id:Date.now(),
-        pelapor: currentUser.nim,
-        nama: currentUser.nama,
-        judul: lapJudul.value,
+function kirimLaporan() {
+    laporan.push({
+        nim: currentMhs.nim,
         kategori: lapKategori.value,
-        isi: lapIsi.value,
-        status:"baru"
-    });
-    localStorage.setItem("reports", JSON.stringify(reports));
-    loadMhs();
-    alert("Laporan terkirim!");
-}
-
-function loadMhs(){
-    mhsTable.innerHTML="";
-    reports.filter(r=>r.pelapor==currentUser.nim)
-    .forEach(r=>{
-        mhsTable.innerHTML += `
-            <tr>
-                <td>${r.judul}</td>
-                <td>${r.kategori}</td>
-                <td>${r.status}</td>
-            </tr>
-        `;
-    });
-}
-
-function loadAdmin(){
-    adminTable.innerHTML="";
-    let b=0,p=0,s=0;
-
-    reports.forEach(r=>{
-        if(r.status=="baru") b++;
-        if(r.status=="diproses") p++;
-        if(r.status=="selesai") s++;
-
-        adminTable.innerHTML += `
-            <tr>
-                <td>${r.nama}</td>
-                <td>${r.judul}</td>
-                <td>${r.status}</td>
-            </tr>
-        `;
+        desc: lapDesc.value,
+        status: "Baru"
     });
 
-    sBaru.innerText=b;
-    sProses.innerText=p;
-    sSelesai.innerText=s;
+    localStorage.setItem("laporan", JSON.stringify(laporan));
+
+    lapKategori.value = "";
+    lapDesc.value = "";
+
+    loadMhsTable();
 }
 
-function loadPimpinan(){
-    pimpTable.innerHTML="";
-    let t=reports.length, b=0,p=0,s=0;
+function loadMhsTable() {
+    let html = "";
 
-    reports.forEach(r=>{
-        if(r.status=="baru") b++;
-        if(r.status=="diproses") p++;
-        if(r.status=="selesai") s++;
-
-        pimpTable.innerHTML += `
-            <tr>
-                <td>${r.nama}</td>
-                <td>${r.judul}</td>
-                <td>${r.status}</td>
-            </tr>
-        `;
+    laporan.filter(l => l.nim === currentMhs.nim).forEach(l => {
+        html += `<tr>
+            <td>${l.kategori}</td>
+            <td>${l.desc}</td>
+            <td>${l.status}</td>
+        </tr>`;
     });
 
-    pTotal.innerText=t;
-    pBaru.innerText=b;
-    pProses.innerText=p;
-    pSelesai.innerText=s;
+    mhsTable.innerHTML = html;
 }
 
-function logout(){
-    currentUser=null;
-    showPage("loginPage");
+
+// --------------------------
+// ADMIN DASHBOARD
+// --------------------------
+
+function openAdmin() {
+    authSection.style.display = "none";
+    adminDashboard.style.display = "block";
+    loadAdminStats();
+}
+
+function loadAdminStats() {
+    let baru = laporan.filter(l => l.status === "Baru").length;
+    let proses = laporan.filter(l => l.status === "Diproses").length;
+    let selesai = laporan.filter(l => l.status === "Selesai").length;
+
+    aBaru.textContent = baru;
+    aProses.textContent = proses;
+    aSelesai.textContent = selesai;
+
+    let html = "";
+    laporan.forEach(l => {
+        html += `<tr>
+            <td>${l.kategori}</td>
+            <td>${l.desc}</td>
+            <td>${l.status}</td>
+        </tr>`;
+    });
+
+    adminTable.innerHTML = html;
+}
+
+
+// --------------------------
+// PIMPINAN DASHBOARD
+// --------------------------
+
+function openPimpinan() {
+    authSection.style.display = "none";
+    pimpDashboard.style.display = "block";
+
+    pTotal.textContent = laporan.length;
+    pBaru.textContent = laporan.filter(l => l.status === "Baru").length;
+    pProses.textContent = laporan.filter(l => l.status === "Diproses").length;
+    pSelesai.textContent = laporan.filter(l => l.status === "Selesai").length;
+}
+
+
+// --------------------------
+// LOGOUT
+// --------------------------
+
+function logout() {
+    location.reload();
 }
 </script>
 
